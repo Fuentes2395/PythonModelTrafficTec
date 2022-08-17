@@ -11,7 +11,7 @@ salida = input("Punto de partida: ") #'1,1'
 meta = input("Meta: ") #'6.3,10'
 
 hora = input("Hora: ") 
-#hora = int(hora)
+hora = int(hora)
 
 #https://www.youtube.com/watch?v=PouhDHfssYA 
 G = nx.Graph()
