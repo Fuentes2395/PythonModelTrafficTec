@@ -5,11 +5,16 @@ import math
 import matplotlib.animation as animation
 from trafficSimulator import *
 
+#es importante descargar la libreria de pygames y la de networkx para poder usar el programa
 
 
+#El primer paso es crear un grafo con tadas las posibles rutas que puede tomar el vehiculo 
+# y les asigna un peso dependiendo de la hora y el trafico que puede haber en esa hora
 
+
+#para este grafo nos apoyamos en el siguiente video de youtube https://www.youtube.com/watch?v=PouhDHfssYA 
+# y esta pagina #https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.weighted.dijkstra_path.html 
 hora = 6
-#https://www.youtube.com/watch?v=PouhDHfssYA 
 G = nx.Graph()
 if hora <= 6 or hora >= 22:
   G.add_edge("1,1", "2,7", weight=466)
@@ -25,7 +30,7 @@ elif hora >= 7 or hora == 8 or hora == 10 or hora == 16 or hora == 21:
   G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
-  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=2310.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
   G.add_edge("8,1.6","1,1", weight=900)
   G.add_edge("9,1.8", "12,2.3", weight=202)
@@ -34,7 +39,7 @@ elif hora == 9 or hora == 11 or hora == 12 or hora == 17 or hora == 18 or hora =
   G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
-  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=2310.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
   G.add_edge("8,1.6","1,1", weight=900)
   G.add_edge("9,1.8", "12,2.3", weight=202)
@@ -43,7 +48,7 @@ elif hora == 13 or hora == 14 or hora == 15:
   G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
-  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=2310.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
   G.add_edge("8,1.6","1,1", weight=900)
   G.add_edge("9,1.8", "12,2.3", weight=202)
@@ -52,7 +57,6 @@ elif hora == 13 or hora == 14 or hora == 15:
   nx.draw_networkx(G, with_labels = True)
 
 
-#https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.weighted.dijkstra_path.html 
 
 
 def ListaRutas(lista):
@@ -78,35 +82,36 @@ def ListaRutas(lista):
 
 
 
-#hora = input("Hora: ") 
-
-
-
+#Este arreglo contiene las rutas que tieen los autos, cada elemento de la lista contiene un par cordenadas que representan donde empezo y donde termino la ruta
 entradas=[('1,1','6.7,7.5'),
             ('1,1','6.3,10'),
             ('1,1','7.5,4'),
 ]
 
-
-
+#En este arreglo se guardan todos los puntos por los que tienen que pasar cada vehiculo para llegar a la meta, utilizando el grafo que se creo anteriormente
 arreglo_cordenadas = []
-
 for i in range(len(entradas)):
     lista_cordenadas = nx.dijkstra_path(G, source=str(entradas[i][0]), target=str(entradas[i][1]))
     arreglo_cordenadas.append(lista_cordenadas)
 
-print (arreglo_cordenadas)
 
-
+#En este arreglo se guarda el numero de calle por el que tiene que pasar cada vehiculo para llegar a la meta
+#utiliza el arreglo de arreglo_cordenadas 
 arreglo_rutas = []
 for i in range(len(arreglo_cordenadas)):
     arreglo_rutas.append(ListaRutas(arreglo_cordenadas[i]))
 
-print (arreglo_rutas)
+
+
+#Inicia la simulacion de las calles y los vehiculos 
+#basamos este modelo en el de la pagina https://towardsdatascience.com/simulating-traffic-flow-in-python-ee1eab4dd20f
 
 
 sim = Simulation()
+
 sim.create_roads([
+    #consegiomos estas cordenadas usando la herrramienta de desmos, 
+    #insertando una imagen del mapa del campus y asignando puntos en cada inicio de una calle 
     ((10,10),(20,70)),    # Road 0
     ((20,70),(67,75)),    # Road 1
     ((67,75),(63,100)),   # Road 2
@@ -118,12 +123,11 @@ sim.create_roads([
 
 ])
 
-def road(a): return range(a, a+n)
-
+#se crean los agentes que van a simular el movimiento de los vehiculos
 sim.create_gen({
-    'vehicle_rate': 10,
+    'vehicle_rate': 10,   #velocidad de generacion de vehiculos
     'vehicles': [
-        [1, {'path': arreglo_rutas[0]}],
+        [1, {'path': arreglo_rutas[0]}],    #Se utilixa el arreglo de rutas para que cada vehiculo se mueva en una ruta diferente
         [1, {'path': arreglo_rutas[1]}],
         [1, {'path': arreglo_rutas[2]}]    
     ]
@@ -131,4 +135,4 @@ sim.create_gen({
 # Start simulation
 win = Window(sim)
 win.zoom = 6
-win.run(steps_per_update=5)
+win.run(steps_per_update=2)
