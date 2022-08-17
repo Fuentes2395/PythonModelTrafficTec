@@ -1,4 +1,4 @@
-def puntosCurva(start, end, control, resolution=5):
+def curve_points(start, end, control, resolution=5):
 	# If curve is a straight line
 	if (start[0] - end[0])*(start[1] - end[1]) == 0:
 		return [start, end]
@@ -14,18 +14,18 @@ def puntosCurva(start, end, control, resolution=5):
 
 	return path
 
-def curvaCalle(start, end, control, resolution=15):
-	points = puntosCurva(start, end, control, resolution=resolution)
+def curve_road(start, end, control, resolution=15):
+	points = curve_points(start, end, control, resolution=resolution)
 	return [(points[i-1], points[i]) for i in range(1, len(points))]
 
-IZQ = 0
-DERECH = 1
-def giros(start, end, vuelta, resolution=15):
+TURN_LEFT = 0
+TURN_RIGHT = 1
+def turn_road(start, end, turn_direction, resolution=15):
 	# Get control point
 	x = min(start[0], end[0])
 	y = min(start[1], end[1])
 
-	if vuelta == IZQ:
+	if turn_direction == TURN_LEFT:
 		control = (
 			x - y + start[1],
 			y - x + end[0]
@@ -36,4 +36,5 @@ def giros(start, end, vuelta, resolution=15):
 			y - x + start[0]
 		)
 	
-	return curvaCalle(start, end, control, resolution=resolution)
+	return curve_road(start, end, control, resolution=resolution)
+
