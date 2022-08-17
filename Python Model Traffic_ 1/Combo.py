@@ -1,88 +1,131 @@
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+import math
+import matplotlib.animation as animation
 from trafficSimulator import *
+
+
+
+
+hora = 6
+#https://www.youtube.com/watch?v=PouhDHfssYA 
+G = nx.Graph()
+if hora <= 6 or hora >= 22:
+  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
+  G.add_edge("6.7,7.5", "6.3,10", weight=158)
+  G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=2310.5)
+  G.add_edge("8,1.6", "9,1.8", weight=96)
+  G.add_edge("8,1.6","1,1", weight=900)
+  G.add_edge("9,1.8", "12,2.3", weight=202)
+elif hora >= 7 or hora == 8 or hora == 10 or hora == 16 or hora == 21:
+  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
+  G.add_edge("6.7,7.5", "6.3,10", weight=158)
+  G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("8,1.6", "9,1.8", weight=96)
+  G.add_edge("8,1.6","1,1", weight=900)
+  G.add_edge("9,1.8", "12,2.3", weight=202)
+elif hora == 9 or hora == 11 or hora == 12 or hora == 17 or hora == 18 or hora == 19 or hora == 20:
+  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
+  G.add_edge("6.7,7.5", "6.3,10", weight=158)
+  G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("8,1.6", "9,1.8", weight=96)
+  G.add_edge("8,1.6","1,1", weight=900)
+  G.add_edge("9,1.8", "12,2.3", weight=202)
+elif hora == 13 or hora == 14 or hora == 15:
+  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
+  G.add_edge("6.7,7.5", "6.3,10", weight=158)
+  G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
+  G.add_edge("7.5,4", "8,1.6", weight=231.5)
+  G.add_edge("8,1.6", "9,1.8", weight=96)
+  G.add_edge("8,1.6","1,1", weight=900)
+  G.add_edge("9,1.8", "12,2.3", weight=202)
+
+
+  nx.draw_networkx(G, with_labels = True)
+
+
+#https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.weighted.dijkstra_path.html 
+
+
+def ListaRutas(lista):
+    lista_rutas = []
+    for i in range(len(lista)-1):
+        if (str(lista[i]))== '1,1' and (str(lista [i+1])) == '2,7':
+            lista_rutas.append(0)
+        elif (str(lista[i]))== '2,7' and (str(lista [i+1])) == '6.7,7.5':
+            lista_rutas.append(1)
+        elif (str(lista[i]))== '6.7,7.5' and (str(lista [i+1])) == '6.3,10':
+            lista_rutas.append(2)
+        elif (str(lista[i]))== '6.7,7.5' and (str(lista [i+1])) == '7.5,4':
+            lista_rutas.append(3)
+        elif (str(lista[i]))== '7.5,4' and (str(lista [i+1])) == '8,1.6':
+            lista_rutas.append(4)
+        elif (str(lista[i]))== '8,1.6' and (str(lista [i+1])) == '9,1.8':
+            lista_rutas.append(5)
+        elif (str(lista[i]))== '9,1.8' and (str(lista [i+1])) == '12,2.3':
+            lista_rutas.append(6)
+        elif (str(lista[i]))== '12,2.3' and (str(lista [i+1])) == '1,1':
+            lista_rutas.append(7)
+    return lista_rutas
+
+
+
+#hora = input("Hora: ") 
+
+
+
+entradas=[('1,1','6.7,7.5'),
+            ('1,1','6.3,10'),
+            ('1,1','7.5,4'),
+]
+
+
+
+arreglo_cordenadas = []
+
+for i in range(len(entradas)):
+    lista_cordenadas = nx.dijkstra_path(G, source=str(entradas[i][0]), target=str(entradas[i][1]))
+    arreglo_cordenadas.append(lista_cordenadas)
+
+print (arreglo_cordenadas)
+
+
+arreglo_rutas = []
+for i in range(len(arreglo_cordenadas)):
+    arreglo_rutas.append(ListaRutas(arreglo_cordenadas[i]))
+
+print (arreglo_rutas)
+
+
 sim = Simulation()
-
-
-
-
-
-
-n = 15
-l = 200
-a = 10
-b = 50
-c = 20
-d = 5
-e = 80
-f = 40
-
-SOUTH_RIGHT = (a, b)
-SOUTH_LEFT = (-a, b)
-NORTH_RIGHT = (-a, -b)
-NORTH_LEFT = (a, -b)
-
-SOUTH_RIGHT_START = (a, l+b)
-SOUTH_LEFT_START = (-a, l+b)
-NORTH_RIGHT_START = (-a, -l-b)
-NORTH_LEFT_START = (a, -l-b)
-
-SOUTH_MIDDLE = (0, b-c)
-NORTH_MIDDLE = (0, -b+c)
-
-SOUTH_RIGHT_IN = (d, b-c+d)
-SOUTH_RIGHT_OUT = (-d, b-c-d)
-SOUTH_RIGHT_MIDDLE = (-a, b-2*c)
-NORTH_RIGHT_MIDDLE = (-a, -b+2*c)
-NORTH_RIGHT_OUT = (-d, -b+c+d)
-NORTH_RIGHT_IN = (d, -b+c-d)
-
-SOUTH_LEFT_IN = (-d, b-c+d)
-SOUTH_LEFT_OUT = (d, b-c-d)
-SOUTH_LEFT_MIDDLE = (a, b-2*c)
-NORTH_LEFT_MIDDLE = (a, -b+2*c)
-NORTH_LEFT_OUT = (d, -b+c+d)
-NORTH_LEFT_IN = (-d, -b+c-d)
-
-SOUTH_RIGHT_TURN = (f, b-c-c/2)
-SOUTH_RIGHT_MERGE = (e, 5)
-
-SOUTH_LEFT_TURN = (-f, b-c-c/2)
-SOUTH_LEFT_MERGE = (-e, 5)
-
-NORTH_RIGHT_TURN = (f, -b+c+c/2)
-NORTH_RIGHT_MERGE = (e, -5)
-
-NORTH_LEFT_TURN = (-f, -b+c+c/2)
-NORTH_LEFT_MERGE = (-e, -5)
-
 sim.create_roads([
-    ((10,10),(20,70)),
-    ((20,70),(67,75)),
-    ((67,75),(63,100)),
-    ((67, 75),(75, 40)),
-    ((75, 40), (80, 16)),
-    ((80, 16), (10, 10)),
-    ((80, 16), (90, 18)),
-    ((90, 18), (120, 23))
+    ((10,10),(20,70)),    # Road 0
+    ((20,70),(67,75)),    # Road 1
+    ((67,75),(63,100)),   # Road 2
+    ((67, 75),(75, 40)),  # Road 3
+    ((75, 40), (80, 16)), # Road 4
+    ((80, 16), (10, 10)), # Road 5
+    ((80, 16), (90, 18)), # Road 6
+    ((90, 18), (120, 23)) # Road 7
 
 ])
 
 def road(a): return range(a, a+n)
 
 sim.create_gen({
-    'vehicle_rate': 90,
+    'vehicle_rate': 10,
     'vehicles': [
-        [5, {'path': [0,1]}],
-        [5, {'path': [1,2]}],
-        [5, {'path': [0,1,2]}],
-        [5, {'path': [0,1,3]}],
-        [5, {'path': [0,1,3,4]}],
-        [5, {'path': [1,3]}],
-        [5, {'path': [1,3,4]}],
-        [5, {'path': [5]}],
-        [5, {'path': [6,7]}]
-
-       
+        [1, {'path': arreglo_rutas[0]}],
+        [1, {'path': arreglo_rutas[1]}],
+        [1, {'path': arreglo_rutas[2]}]    
     ]
 })
 # Start simulation
