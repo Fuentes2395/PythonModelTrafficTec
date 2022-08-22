@@ -86,6 +86,9 @@ def ListaRutas(lista):
 entradas=[('1,1','6.7,7.5'),
             ('1,1','6.3,10'),
             ('1,1','7.5,4'),
+            ('7.5,4','12,2.3'),
+
+          
 ]
 
 #En este arreglo se guardan todos los puntos por los que tienen que pasar cada vehiculo para llegar a la meta, utilizando el grafo que se creo anteriormente
@@ -104,6 +107,7 @@ for i in range(len(arreglo_cordenadas)):
 
 
 #Inicia la simulacion de las calles y los vehiculos 
+
 #basamos este modelo en el de la pagina https://towardsdatascience.com/simulating-traffic-flow-in-python-ee1eab4dd20f
 
 
@@ -125,11 +129,14 @@ sim.create_roads([
 
 #se crean los agentes que van a simular el movimiento de los vehiculos
 sim.create_gen({
-    'vehicle_rate': 10,   #velocidad de generacion de vehiculos
+    'vehicle_rate': 90,   #velocidad de generacion de vehiculos
     'vehicles': [
         [1, {'path': arreglo_rutas[0]}],    #Se utilixa el arreglo de rutas para que cada vehiculo se mueva en una ruta diferente
         [1, {'path': arreglo_rutas[1]}],
-        [1, {'path': arreglo_rutas[2]}]    
+        [1, {'path': arreglo_rutas[2]}], 
+        [1, {'path': arreglo_rutas[3]}] ,
+        [1, {'path': [4,5]}], 
+        [1, {'path': [4,6,7]}] 
     ]
 })
 # Start simulation
