@@ -13,11 +13,11 @@ class Vehicle:
         self.init_properties()
 
     def set_default_config(self):    
-        self.l = 4
+        self.l = 1
         self.s0 = 4
         self.T = 1
-        self.v_max = 16.6
-        self.a_max = 1.44
+        self.v_max = 16    ##  elocidad maxima en m/s     Og: 16.6
+        self.a_max = 1.44      ## Acelereation limit          Og:  1.44
         self.b_max = 4.61
 
         self.path = []

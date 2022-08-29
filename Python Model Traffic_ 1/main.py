@@ -1,8 +1,8 @@
-import numpy as np
+#import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
-import math
-import matplotlib.animation as animation
+#import matplotlib.pyplot as plt
+#import math
+#import matplotlib.animation as animation
 from trafficSimulator import *
 
 #es importante descargar la libreria de pygames y la de networkx para poder usar el programa
@@ -17,40 +17,40 @@ from trafficSimulator import *
 hora = 6
 G = nx.DiGraph()
 if hora <= 6 or hora >= 22:
-  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("1,1", "2,7", weight=200)
   G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5)
   G.add_edge("7.5,4", "8,1.6", weight=231.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
-  G.add_edge("8,1.6", "1,1", weight=900)
+  G.add_edge("8,1.6", "1,1", weight=200)
   G.add_edge("9,1.8", "12,2.3", weight=202)
 elif hora >= 7 or hora == 8 or hora == 10 or hora == 16 or hora == 21:
-  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("1,1", "2,7", weight=200)
   G.add_edge("2,7", "6.7,7.5", weight=347*1.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5*1.5)
   G.add_edge("7.5,4", "8,1.6", weight=231.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
-  G.add_edge("8,1.6", "1,1", weight=900)
+  G.add_edge("8,1.6", "1,1", weight=156)
   G.add_edge("9,1.8", "12,2.3", weight=202)
 elif hora == 9 or hora == 11 or hora == 12 or hora == 17 or hora == 18 or hora == 19 or hora == 20:
-  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("1,1", "2,7", weight=200)
   G.add_edge("2,7", "6.7,7.5", weight=347*2)
   G.add_edge("6.7,7.5", "6.3,10", weight=158*1.5)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5*2)
   G.add_edge("7.5,4", "8,1.6", weight=231.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
-  G.add_edge("8,1.6", "1,1", weight=900)
+  G.add_edge("8,1.6", "1,1", weight=156)
   G.add_edge("9,1.8", "12,2.3", weight=202)
 elif hora == 13 or hora == 14 or hora == 15:
-  G.add_edge("1,1", "2,7", weight=466)
+  G.add_edge("1,1", "2,7", weight=200)
   G.add_edge("2,7", "6.7,7.5", weight=347*2.5)
   G.add_edge("6.7,7.5", "6.3,10", weight=158*2)
   G.add_edge("6.7,7.5", "7.5,4", weight= 231.5*2.5)
   G.add_edge("7.5,4", "8,1.6", weight=231.5)
   G.add_edge("8,1.6", "9,1.8", weight=96)
-  G.add_edge("8,1.6", "1,1", weight=900)
+  G.add_edge("8,1.6", "1,1", weight=156)
   G.add_edge("9,1.8", "12,2.3", weight=202)
 
   nx.draw_networkx(G, with_labels = True)
@@ -128,7 +128,7 @@ sim.create_roads([
 
 #se crean los agentes que van a simular el movimiento de los vehiculos
 sim.create_gen({
-    'vehicle_rate': 90,   #velocidad de generacion de vehiculos
+    'vehicle_rate': 30,   #velocidad de generacion de vehiculos
     'vehicles': [
         [1, {'path': arreglo_rutas[0]}],    #Se utilixa el arreglo de rutas para que cada vehiculo se mueva en una ruta diferente
         [1, {'path': arreglo_rutas[1]}],
@@ -138,7 +138,11 @@ sim.create_gen({
         [1, {'path': [4,6,7]}] 
     ]
 })
+
+sim.create_signal([[0,4], [1,5] ])
+
+
 # Start simulation
 win = Window(sim)
-win.zoom = 6
-win.run(steps_per_update=2)
+win.zoom = 10
+win.run(steps_per_update=1)

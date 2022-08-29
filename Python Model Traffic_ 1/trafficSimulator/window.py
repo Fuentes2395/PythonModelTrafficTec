@@ -270,7 +270,7 @@ class Window:
             
 
 
-            # TODO: Draw road arrow
+            #TODO: Draw road arrow
 
     def draw_vehicle(self, vehicle, road):
         l, h = vehicle.l,  2
@@ -280,12 +280,21 @@ class Window:
         y = road.start[1] + sin * vehicle.x 
 
         self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+        return x ,y
+       
 
     def draw_vehicles(self):
+        contr = 0
+        lista = []
         for road in self.sim.roads:
             # Draw vehicles
+            contv = 0 
             for vehicle in road.vehicles:
-                self.draw_vehicle(vehicle, road)
+                x, y  = self.draw_vehicle(vehicle, road)
+                lista.append([contr, contv, x, y])
+                contv += 1
+            contr += 1
+        print (lista)
 
     def draw_signals(self):
         for signal in self.sim.traffic_signals:
