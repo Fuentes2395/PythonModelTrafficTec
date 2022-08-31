@@ -2,13 +2,20 @@ import pygame
 from pygame import gfxdraw
 import numpy as np
 
+from .Server import *
+
+# 
+
 class Window:
+
     def __init__(self, sim, config={}):
         # Simulation to draw
+        # UServer = Server(run())
         self.sim = sim
 
         # Set default configurations
         self.set_default_config()
+       
 
         # Update configurations
         for attr, val in config.items():
@@ -294,7 +301,10 @@ class Window:
                 lista.append([contr, contv, x, y])
                 contv += 1
             contr += 1
-        print (lista)
+        # print (lista)
+        # UServer.do_POST(lista)
+
+        
 
     def draw_signals(self):
         for signal in self.sim.traffic_signals:

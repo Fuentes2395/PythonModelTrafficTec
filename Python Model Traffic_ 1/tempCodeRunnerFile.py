@@ -1,1 +1,1 @@
-vehicle_rate
+50
