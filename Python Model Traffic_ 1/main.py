@@ -1,3 +1,14 @@
+#Equipo 6
+
+#Programa principal para proyecto de Sistemas multiagentes que
+# 1.Llena un grafo con nodos y pesos representando las calles cercanas a la zona Tec
+# 2.Crea una lista de rutas traduciendo los nodos a calles
+# 3.Genera un arreglo con datos de prueba de carros con inicio y fin predeterminados
+# 4.Se utiliza el algoritmo de dijkstra para encontrar el camino más rápido entre inicio y fin
+# 5.Se transforman los nodos resultantes de dijkstra a sus números de calle
+# 6. Inicia la simulación con los coches
+#
+
 #import numpy as np
 import networkx as nx
 #import matplotlib.pyplot as plt
@@ -11,9 +22,9 @@ from trafficSimulator import *
 #El primer paso es crear un grafo con tadas las posibles rutas que puede tomar el vehiculo 
 # y les asigna un peso dependiendo de la hora y el trafico que puede haber en esa hora
 
-
 #para este grafo nos apoyamos en el siguiente video de youtube https://www.youtube.com/watch?v=PouhDHfssYA 
 # y esta pagina #https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.shortest_paths.weighted.dijkstra_path.html 
+#En cuanto a los pesos, se hizo una estimación manual considerando el tráfico que hay por hora de acuerdo a Google Maps
 hora = 6
 G = nx.DiGraph()
 if hora <= 6 or hora >= 22:
@@ -57,7 +68,7 @@ elif hora == 13 or hora == 14 or hora == 15:
 
 
 
-
+#Por cada cambio de nodo a nodo que hay, se adjunta al arreglo lista_rutas un número correspondiente a la calle que se cruza
 def ListaRutas(lista):
     lista_rutas = []
     for i in range(len(lista)-1):
@@ -81,7 +92,8 @@ def ListaRutas(lista):
 
 
 
-#Este arreglo contiene las rutas que tieen los autos, cada elemento de la lista contiene un par cordenadas que representan donde empezo y donde termino la ruta
+#Este arreglo contiene las rutas que tienen los autos, cada elemento de la lista contiene un par cordenadas que representan donde empezo y donde termino la ruta
+#En otras palabras, son datos de prueba
 entradas=[('1,1','6.7,7.5'),
             ('1,1','6.3,10'),
             ('1,1','7.5,4'),
@@ -90,7 +102,7 @@ entradas=[('1,1','6.7,7.5'),
           
 ]
 
-#En este arreglo se guardan todos los puntos por los que tienen que pasar cada vehiculo para llegar a la meta, utilizando el grafo que se creo anteriormente
+#En arreglo_cordenadas se guardan todos los puntos por los que tienen que pasar cada vehiculo para llegar a la meta, utilizando el grafo que se creo anteriormente y el algoritmo de dijkstra
 arreglo_cordenadas = []
 for i in range(len(entradas)):
     lista_cordenadas = nx.dijkstra_path(G, source=str(entradas[i][0]), target=str(entradas[i][1]))
@@ -106,14 +118,13 @@ for i in range(len(arreglo_cordenadas)):
 
 
 #Inicia la simulacion de las calles y los vehiculos 
-
 #basamos este modelo en el de la pagina https://towardsdatascience.com/simulating-traffic-flow-in-python-ee1eab4dd20f
 
 
 sim = Simulation()
 
 sim.create_roads([
-    #consegiomos estas cordenadas usando la herrramienta de desmos, 
+    #conseguimos estas cordenadas usando la herrramienta de desmos y geogebra, 
     #insertando una imagen del mapa del campus y asignando puntos en cada inicio de una calle 
     ((10,10),(20,70)),    # Road 0
     ((20,70),(67,75)),    # Road 1
@@ -130,7 +141,7 @@ sim.create_roads([
 sim.create_gen({
     'vehicle_rate': 30,   #velocidad de generacion de vehiculos
     'vehicles': [
-        [1, {'path': arreglo_rutas[0]}],    #Se utilixa el arreglo de rutas para que cada vehiculo se mueva en una ruta diferente
+        [1, {'path': arreglo_rutas[0]}],    #Se utiliza el arreglo de rutas para que cada vehiculo se mueva en una ruta diferente
         [1, {'path': arreglo_rutas[1]}],
         [1, {'path': arreglo_rutas[2]}], 
         [1, {'path': arreglo_rutas[3]}] ,
