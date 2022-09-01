@@ -16,9 +16,11 @@ class Vehicle:
         self.l = 1
         self.s0 = 4
         self.T = 1
-        self.v_max = 16    ##  elocidad maxima en m/s     Og: 16.6
+        self.v_max = 16    ##  velocidad maxima en m/s     Og: 16.6
         self.a_max = 1.44      ## Acelereation limit          Og:  1.44
         self.b_max = 4.61
+
+        self.time = 0
 
         self.path = []
         self.current_road_index = 0
@@ -34,6 +36,7 @@ class Vehicle:
 
     def update(self, lead, dt):
         # Update position and velocity
+        self.time = self.time + dt
         if self.v + self.a*dt < 0:
             self.x -= 1/2*self.v*self.v/self.a
             self.v = 0

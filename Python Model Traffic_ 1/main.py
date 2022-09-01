@@ -153,6 +153,32 @@ sim.create_gen({
 temp = 10; 
 sim.create_signal([[0,4], [1,5]], temp)
 
+'''
+temp = 10; 
+sim.create_signal([[0], [1]], temp)
+
+
+temp2 = 8; 
+sim.create_signal([[4], [5]], temp2)
+'''
+sim1_1=sim 
+sim1_2=sim 
+sim1_3=sim 
+sim1_4=sim 
+sim1_5=sim 
+
+
+
+for i in range (0, 18000): 
+    avg_1 = sim1_1.update()
+    avg_2 = sim1_2.update()
+    avg_3 = sim1_3.update()
+    avg_4 = sim1_4.update()
+    avg_5 = sim1_5.update()
+    #print (avg)
+
+print(avg)
+
 
 # Start simulation
 win = Window(sim)

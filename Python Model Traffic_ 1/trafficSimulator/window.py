@@ -10,7 +10,7 @@ class Window:
 
     def __init__(self, sim, config={}):
         # Simulation to draw
-        # UServer = Server(run())
+        # UServer = Server() 
         self.sim = sim
 
         # Set default configurations
@@ -293,15 +293,19 @@ class Window:
     def draw_vehicles(self):
         contr = 0
         lista = []
+        sumTime = 0
+        contTotal = 0
         for road in self.sim.roads:
             # Draw vehicles
             contv = 0 
             for vehicle in road.vehicles:
                 x, y  = self.draw_vehicle(vehicle, road)
-                lista.append([contr, contv, x, y])
+                time = vehicle.time
+                sumTime= sumTime + time 
+                lista.append([contr, contv, x, y, time])
                 contv += 1
             contr += 1
-        # print (lista)
+        # print (lista) 
         # UServer.do_POST(lista)
 
         

@@ -4,9 +4,15 @@ from .vehicle_generator import VehicleGenerator
 from .traffic_signal import TrafficSignal
 
 class Simulation:
+
     def __init__(self, config={}):
         # Set default configuration
         self.set_default_config()
+
+        self.sumTime = 0 
+        self.sumVeh = 0 
+        self.AvgTime = 0
+
 
         # Update configuration
         for attr, val in config.items():
@@ -71,10 +77,17 @@ class Simulation:
                     next_road_index = vehicle.path[vehicle.current_road_index]
                     self.roads[next_road_index].vehicles.append(new_vehicle)
                 # In all cases, remove it from its road
+                self.sumVeh = self.sumVeh + 1
+                self.sumTime =  self.sumTime + vehicle.time  
+                self.AvgTime =  self.sumTime/self.sumVeh
+                #print(self.AvgTime)
                 road.vehicles.popleft() 
+        
+
         # Increment time
         self.t += self.dt
         self.frame_count += 1
+        return self.AvgTime
 
 
     def run(self, steps):
