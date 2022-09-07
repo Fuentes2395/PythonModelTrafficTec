@@ -131,14 +131,14 @@ sim = Simulation()
 sim.create_roads([
     #conseguimos estas cordenadas usando la herrramienta de desmos y geogebra, 
     #insertando una imagen del mapa del campus y asignando puntos en cada inicio de una calle 
-    ((10,10),(20,70)),    # Road 0
-    ((20,70),(67,75)),    # Road 1
-    ((67,75),(63,100)),   # Road 2
-    ((67, 75),(75, 40)),  # Road 3
-    ((75, 40), (80, 16)), # Road 4
-    ((80, 16), (10, 10)), # Road 5
-    ((80, 16), (90, 18)), # Road 6
-    ((90, 18), (120, 23)) # Road 7
+    ((-3, 73),(25, 22)),    # Road 0
+    ((25, 22),(-6, -5.5)),    # Road 1
+    ((-6, -5.5),(0.75, -12.5)),   # Road 2
+    ((-6, -5.5),(-30, 16.5)),  # Road 3
+    ((-30, 16.5), (-48.25, 34.8)), # Road 4
+    ((-48.25, 34.8), (-3, 73)), # Road 5
+    ((-48.25, 34.8), (-56, 28.25)), # Road 6
+    ((-56, 28.25), (-66, 20)) # Road 7
 
 ])
 
@@ -212,7 +212,7 @@ def positionsToJSON(ps):
         pos = {
             "id" : p[0],
             "x" : p[1],
-            "y" : 0,
+            "y" : 1.5,
             "z" : p[2]
         }
         posDICT.append(pos)
