@@ -13,6 +13,8 @@ class Simulation:
         self.sumVeh = 0 
         self.AvgTime = 0
 
+        self.listPos = []
+
 
         # Update configuration
         for attr, val in config.items():
@@ -83,13 +85,27 @@ class Simulation:
                 #print(self.AvgTime)
                 road.vehicles.popleft() 
         
-
+        contr = 0
+        lista = []
+        for road in self.roads:
+            contv = 0 
+            for vehicle in road.vehicles:
+                sin, cos = road.angle_sin, road.angle_cos
+                x = road.start[0] + cos * vehicle.x 
+                y = road.start[1] + sin * vehicle.x 
+                lista.append([vehicle.id, x, y])
+                contv += 1
+            contr += 1
+        self.listPos = lista
+        # print (self.listPos)
+        
         # Increment time
         self.t += self.dt
         self.frame_count += 1
-        return self.AvgTime
+
 
 
     def run(self, steps):
         for _ in range(steps):
             self.update()
+

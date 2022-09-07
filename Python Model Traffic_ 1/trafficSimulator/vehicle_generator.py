@@ -5,6 +5,8 @@ class VehicleGenerator:
     def __init__(self, sim, config={}):
         self.sim = sim
 
+        self.idCount = 0
+
         # Set default configurations
         self.set_default_config()
 
@@ -25,6 +27,7 @@ class VehicleGenerator:
 
     def init_properties(self):
         self.upcoming_vehicle = self.generate_vehicle()
+        self.upcoming_vehicle.id=self.idCount
 
     def generate_vehicle(self):
         """Returns a random vehicle from self.vehicles with random proportions"""
@@ -32,7 +35,7 @@ class VehicleGenerator:
         r = randint(1, total+1)
         for (weight, config) in self.vehicles:
             r -= weight
-            if r <= 0:
+            if r <= 0: 
                 return Vehicle(config)
 
     def update(self):
@@ -49,4 +52,7 @@ class VehicleGenerator:
                 # Reset last_added_time and upcoming_vehicle
                 self.last_added_time = self.sim.t
             self.upcoming_vehicle = self.generate_vehicle()
+            self.idCount = self.idCount +1 
+            self.upcoming_vehicle.id=self.idCount
+
 

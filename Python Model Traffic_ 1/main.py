@@ -16,6 +16,11 @@ import networkx as nx
 #import matplotlib.animation as animation
 from trafficSimulator import *
 
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import logging
+import json
+
+
 #es importante descargar la libreria de pygames y la de networkx para poder usar el programa
 
 
@@ -150,8 +155,7 @@ sim.create_gen({
     ]
 })
 
-temp = 10; 
-sim.create_signal([[0,4], [1,5]], temp)
+sim.create_signal([[0,4], [1,5]], 10)
 
 '''
 temp = 10; 
@@ -161,26 +165,138 @@ sim.create_signal([[0], [1]], temp)
 temp2 = 8; 
 sim.create_signal([[4], [5]], temp2)
 '''
-sim1_1=sim 
-sim1_2=sim 
-sim1_3=sim 
-sim1_4=sim 
-sim1_5=sim 
+
+def run_sim(time, sim = Simulation()):
+    simCopy=deepcopy(sim)
+    simCopy.create_signal([[0,4], [1,5]], time)
+    sim1=deepcopy(simCopy) 
+    sim2=deepcopy(simCopy)  
+    sim3=deepcopy(simCopy)  
+    sim4=deepcopy(simCopy)  
+    sim5=deepcopy(simCopy)  
+    for i in range (0, 18000): 
+        sim1.update()
+        sim2.update()
+        sim3.update()
+        sim4.update()
+        sim5.update()
+    
+    return (sim1.AvgTime+sim2.AvgTime+sim3.AvgTime+sim4.AvgTime+sim5.AvgTime)/5
+
+'''
+avg1 = run_sim(10, sim)
+avg2 = run_sim(12, sim)
+print(avg1, avg2)
+
+'''
+
+
+#for i in range (0, 18000): 
+    #sim.update()
+
+
+#_______________________________________________________________________________________________________________________
+#Server
+
+
+def updatePositions():
+    global sim
+    sim.update()
+
+    positions = sim.listPos
+    return positions
+
+def positionsToJSON(ps):
+    posDICT = []
+    for p in ps:
+        pos = {
+            "id" : p[0],
+            "x" : p[1],
+            "y" : 0,
+            "z" : p[2]
+        }
+        posDICT.append(pos)
+    return json.dumps(posDICT)
+
+
+class Server(BaseHTTPRequestHandler):
+    
+    def _set_response(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        
+    def do_GET(self):
+        logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
+        self._set_response()
+        self.wfile.write("GET request for {}".format(self.path).encode('utf-8'))
+
+    def do_POST(self):
+        content_length = int(self.headers['Content-Length'])
+        #post_data = self.rfile.read(content_length)
+        post_data = json.loads(self.rfile.read(content_length))
+        #logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
+                     #str(self.path), str(self.headers), post_data.decode('utf-8'))
+        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
+                     str(self.path), str(self.headers), json.dumps(post_data))
+        
+        '''
+        x = post_data['x'] * 2
+        y = post_data['y'] * 2
+        z = post_data['z'] * 2
+        
+        position = {
+            "x" : x,
+            "y" : y,
+            "z" : z
+        }
+
+        self._set_response()
+        #self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
+        self.wfile.write(str(position).encode('utf-8'))
+        '''
+        
+        positions = updatePositions()
+        #print(positions)
+        self._set_response()
+        resp = "{\"data\":" + positionsToJSON(positions) + "}"
+        #print(resp)
+        self.wfile.write(resp.encode('utf-8'))
+
+
+def run(server_class=HTTPServer, handler_class=Server, port=8585):
+    logging.basicConfig(level=logging.INFO)
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    logging.info("Starting httpd...\n") # HTTPD is HTTP Daemon!
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:   # CTRL+C stops the server
+        pass
+    httpd.server_close()
+    logging.info("Stopping httpd...\n")
+
+if __name__ == '__main__':
+    from sys import argv
+    
+    if len(argv) == 2:
+        run(port=int(argv[1]))
+    else:
+        run()
+
+#_______________________________________________________________________________________________________________________
 
 
 
-for i in range (0, 18000): 
-    avg_1 = sim1_1.update()
-    avg_2 = sim1_2.update()
-    avg_3 = sim1_3.update()
-    avg_4 = sim1_4.update()
-    avg_5 = sim1_5.update()
-    #print (avg)
 
-print(avg)
+
+
 
 
 # Start simulation
+'''
 win = Window(sim)
 win.zoom = 8
 win.run(steps_per_update=1)
+
+'''
