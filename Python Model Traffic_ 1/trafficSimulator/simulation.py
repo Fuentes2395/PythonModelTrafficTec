@@ -23,7 +23,7 @@ class Simulation:
     def set_default_config(self):
         self.t = 0.0            # Time keeping
         self.frame_count = 0    # Frame count keeping
-        self.dt = 1/60          # Simulation time step
+        self.dt = 1/30          # Simulation time step
         self.roads = []         # Array to store roads
         self.generators = []
         self.traffic_signals = []
@@ -59,7 +59,7 @@ class Simulation:
 
         for signal in self.traffic_signals:
             signal.update(self)
-
+       
         # Check roads for out of bounds vehicle
         for road in self.roads:
             # If road has no vehicles, continue

@@ -10,6 +10,7 @@
 #
 
 #import numpy as np
+from unittest import result
 import networkx as nx
 #import matplotlib.pyplot as plt
 #import math
@@ -19,6 +20,7 @@ from trafficSimulator import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import json
+import matplotlib.pyplot as plt
 
 
 #es importante descargar la libreria de pygames y la de networkx para poder usar el programa
@@ -131,14 +133,14 @@ sim = Simulation()
 sim.create_roads([
     #conseguimos estas cordenadas usando la herrramienta de desmos y geogebra, 
     #insertando una imagen del mapa del campus y asignando puntos en cada inicio de una calle 
-    ((-3, 73),(25, 22)),    # Road 0
-    ((25, 22),(-6, -5.5)),    # Road 1
-    ((-6, -5.5),(0.75, -12.5)),   # Road 2
-    ((-6, -5.5),(-30, 16.5)),  # Road 3
-    ((-30, 16.5), (-48.25, 34.8)), # Road 4
-    ((-48.25, 34.8), (-3, 73)), # Road 5
-    ((-48.25, 34.8), (-56, 28.25)), # Road 6
-    ((-56, 28.25), (-66, 20)) # Road 7
+    ((-3, 73),(25, 22)),                # Road 0
+    ((25, 22),(-6, -5.5)),              # Road 1
+    ((-6, -5.5),(0.75, -12.5)),         # Road 2
+    ((-6, -5.5),(-30, 16.5)),           # Road 3
+    ((-30, 16.5), (-48.25, 34.8)),      # Road 4
+    ((-48.25, 34.8), (-3, 73)),         # Road 5
+    ((-48.25, 34.8), (-56, 28.25)),     # Road 6
+    ((-56, 28.25), (-66, 20))           # Road 7
 
 ])
 
@@ -155,7 +157,7 @@ sim.create_gen({
     ]
 })
 
-sim.create_signal([[0,4], [1,5]], 10)
+
 
 '''
 temp = 10; 
@@ -183,13 +185,29 @@ def run_sim(time, sim = Simulation()):
     
     return (sim1.AvgTime+sim2.AvgTime+sim3.AvgTime+sim4.AvgTime+sim5.AvgTime)/5
 
-'''
-avg1 = run_sim(10, sim)
-avg2 = run_sim(12, sim)
-print(avg1, avg2)
+
+''' 
+
+tiempos = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
+resultados = []
+
+for i in tiempos:
+    valor = run_sim(i, sim)
+    print("tiempos" )
+    print (i)
+    print("valor")
+    print (valor)
+    resultados.append(valor)
+
+
+print ("_______________________________________________________________")
+plt.plot(tiempos,resultados)
+plt.show()
+print ("_______________________________________________________________")
 
 '''
-
+sim.create_signal([[0,4], [1,5]], 8)
 
 #for i in range (0, 18000): 
     #sim.update()
@@ -208,11 +226,15 @@ def updatePositions():
 
 def positionsToJSON(ps):
     posDICT = []
+    sem = {
+        "estatus":  sim.traffic_signals[0].current_cycle_index
+    }
+    posDICT.append(sem)
     for p in ps:
         pos = {
             "id" : p[0],
             "x" : p[1],
-            "y" : 1.5,
+            "y" : .55,
             "z" : p[2]
         }
         posDICT.append(pos)
