@@ -234,7 +234,7 @@ def positionsToJSON(ps):
         pos = {
             "id" : p[0],
             "x" : p[1],
-            "y" : .55,
+            "y" : .35,
             "z" : p[2]
         }
         posDICT.append(pos)
