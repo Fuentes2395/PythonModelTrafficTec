@@ -15,3 +15,4 @@ Este programa se complementa con un código de Unity para su visualización grá
 
 La siguiente tabla muestra un resumen de aproximadamente 300 iteraciones del programa, donde se muestra claramente la tendencia de que un tiempo de 8 segundos provee el tiempo más eficiente para el flujo de vehículos:
 
+<img src = img_1.PNG align= "middle">
