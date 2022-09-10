@@ -1,1 +1,14 @@
 # PythonModelTrafficTec
+
+Creado por : 
+
+Roberto Calleja Pedraza A01024834 / 
+Andrés Fuentes Alanís A01177466 / 
+Andrea Catalina Fernández Mena A01197705 / 
+Ana Fernanda Chacón Lomelí A00830052 / 
+Alexa Sofía Arreola Alvarado A01177452 
+
+
+Emulación a través de agentes del distrito Tec representando el flujo de tráfico de hora pico en las calles cercanas, donde los carros se comporten como agentes, retroalimentándose entre sí para seguir las reglas viales básicas. El programa permite modificar el tiempo destinado a los colores rojo y verde de los semáforos, de forma que modificando esta variable de entrada nos regresan el tiempo promedio que tardan los carros dentro de la simulación en llegar desde un origen, a sus diferentes destinos.
+
+Este programa se complementa con un código de Unity para su visualización gráfica. Se puede encontrar en : https://github.com/rcallejap/Unity-Agentes
