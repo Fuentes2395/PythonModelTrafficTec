@@ -22,10 +22,10 @@ La siguiente tabla muestra un resumen de aproximadamente 300 iteraciones del pro
   <li> Descargar Pygame desde la terminal</li>
   <li>Importar los dos repositorios del proyecto:</li>
   <ul>
-    <li>https://github.com/Fuentes2395/PythonModelTrafficTec</li>
+    <li>https://github.com/rcallejap/Python-server-trafic-simulation</li>
     <li>https://github.com/rcallejap/Unity-Agentes</li>
   </ul>
-  <li>Correr primeramente el programa en python (PythonModelTrafficTec) y después el de Unity (Unity-Agentes)</li>
+  <li>Correr primeramente el programa en python (Python-server-trafic-simulation) y después el de Unity (Unity-Agentes)</li>
 
-<ol>
+</ol>
 
